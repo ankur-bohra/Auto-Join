@@ -1,4 +1,4 @@
-AutoMate User Data/**
+*.log
 
 .vscode/
 *.code-workspace
