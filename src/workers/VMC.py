@@ -1,11 +1,13 @@
+import re
+
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
+from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.firefox.service import Service
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.firefox.service import Service
-from selenium.webdriver.firefox.options import Options
 
 WHATSAPP = 'http://web.whatsapp.com'
 PROFILE_PATH = 'C:/Users/pbohr/AppData/Roaming/Mozilla/Firefox/Profiles/rvqzov3w.AutoMate'
@@ -41,7 +43,19 @@ messages = driver.find_elements((By.CLASS_NAME, 'message-in'))
 
 # TODO:
 # Use XPaths to get to the class and id-less <span> tag with the main text
+class_messages = []
+for message in messages:
+    try:
+        text_span = message.find_element((By.CSS_SELECTOR, 'span[dir=ltr]'))
+        hyperlink = text_span.find_element((By.PARTIAL_LINK_TEXT, "zoom"))
+        class_link = hyperlink.get_attribute('href')
+    except:
+        messages.remove(message)
+
 # Feed it into a regex and pick off the link
+meeting_id = re.search('\d+', class_link).group()
+hashed_pwd = re.search('', class_link).group()
+
 # If a valid link is found get the time
 # Sort by time 
 
