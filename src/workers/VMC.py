@@ -1,3 +1,4 @@
+import os
 import re
 
 from bs4 import BeautifulSoup
@@ -41,9 +42,7 @@ action.move_to_element(group_name_span).click().perform()
 # Get all the messages
 messages = driver.find_elements((By.CLASS_NAME, 'message-in'))
 
-# TODO:
-# Use XPaths to get to the class and id-less <span> tag with the main text
-class_messages = []
+# Remove non zoom hyperlink messages
 for message in messages:
     try:
         text_span = message.find_element((By.CSS_SELECTOR, 'span[dir=ltr]'))
@@ -52,12 +51,49 @@ for message in messages:
     except:
         messages.remove(message)
 
-# Feed it into a regex and pick off the link
-meeting_id = re.search('\d+', class_link).group()
-hashed_pwd = re.search('', class_link).group()
+# Pick most accurate class
+next_class = None
+for message in messages:
+    text_span = message.find_element((By.CSS_SELECTOR, 'span[dir=ltr]'))
+    text: str = text_span.text
+    date_match = re.search(r'([a-zA-Z]+)\s(\d+)', text) # Format: 'Feb 18'
+    time_match = re.search(r'(\d+):\d+', text) # Class longer than an hour, minutes not captured
+    
+    month = date_match.group(1)
+    date = int(date_match.group(2))
+    hour = int(time_match.group(1))
 
-# If a valid link is found get the time
-# Sort by time 
+    closer = False
+    if next_class is None:
+        closer = True
+    else:
+        if month == next_class['time']['month']:
+            if date < next_class['time']['date']: # Feb 13 over Feb 10
+                closer = True
+            elif date == next_class['time']:
+                if hour < next_class['time']['hour']:
+                    closer = True
+        
+    if closer:
+        next_class = {
+            'message': message,
+            'date': date,
+            'time' : {
+                'month': month,
+                'hour': hour
+            }
+        }
 
-input()
+
+text_span = next_class['message'].find_element((By.CSS_SELECTOR, 'span[dir=ltr]'))
+hyperlink = text_span.find_element((By.PARTIAL_LINK_TEXT, "zoom"))
+class_link = hyperlink.get_attribute('href')
+meeting_id = re.search(r'\d+', class_link).group()
+pwd = re.search(r'pwd=(\w+)', class_link).group(1)
+
+url = f'zoommtg://zoom.us/join?action=join&conference_id={meeting_id}&pwd={pwd}&uname=Ankur Bohra 9P22GG1010'
+command = f'%appdata%/Zoom/bin/zoom --url="{url}" && exit'
+
+os.popen(command)
+
 driver.quit()
