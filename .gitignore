@@ -1,4 +1,12 @@
+# Ignore test logs
 *.log
 
+# Ignore editor config
 .vscode/
 *.code-workspace
+
+# Ignore venv things
+Include/
+Lib/
+Scripts/
+pyvenv.cfg
