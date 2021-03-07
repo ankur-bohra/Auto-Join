@@ -1,12 +1,13 @@
-# Ignore test logs
+# Ignore test logs and caches
 *.log
+__pycache__/
 
 # Ignore editor config
 .vscode/
 *.code-workspace
 
-# Ignore venv things
-Include/
-Lib/
-Scripts/
-pyvenv.cfg
+# Ignore venv files
+env/
+
+# Ignore sensitive objects
+token.pickle
