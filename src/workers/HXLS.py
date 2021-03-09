@@ -56,5 +56,7 @@ def join_class():
     description = get_class()
     util.zoom.join_from_link(description)
 
+primary_action = join_class
+
 if __name__ == '__main__':
     print(get_class())
