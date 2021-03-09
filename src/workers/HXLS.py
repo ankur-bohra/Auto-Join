@@ -1,7 +1,7 @@
 import os.path
 import pickle
 
-import util # type: ignore
+from . import util # type: ignore
 from google.auth.transport.requests import Request
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
