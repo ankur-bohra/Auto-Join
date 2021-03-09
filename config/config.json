@@ -1,0 +1,17 @@
+{
+    "REFRESH_TIME": 50,
+    "MIN_JOIN_TIME": 1,
+
+    "README": [
+        " REFRESH_TIME: x => check if it's time to join every x seconds                                             ",
+        " Note: REFRESH_TIME affects how early classes are joined.                                                  ",
+        "       Atleast one refresh will happen in REFRESH_TIME seconds before the class, so it is safest to say:   ",
+        "      'Classes will never be joined before REFRESH_TIME from the class'                                    ",
+        "       e.g. REFRESH_TIME = 50 means classes will be joined anywhere** in the 50 seconds before the class   ",
+        "                                                                                                           ",
+        " **MIN_JOIN_TIME can change this so that classes are joined atleast some time before the class to allow    ",
+        "   manual joining in case of a problem.                                                                    ",
+        "                                                                                                           ",
+        " MIN_JOIN_TIME = y # join atleast before y seconds before the class begins                                 "
+    ]
+}
