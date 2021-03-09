@@ -7,25 +7,25 @@
             
         },
         "Wednesday": {
-            "9:05": "HXLS",
-            "10:00": "HXLS",
-            "11:20": "HXLS",
-            "12:15": "HXLS",
-            "13:10": "HXLS"
+            "9:05AM": "HXLS",
+            "10:00AM": "HXLS",
+            "11:20AM": "HXLS",
+            "12:15AM": "HXLS",
+            "1:10PM": "HXLS"
         },
         "Thursday": {
-            "9:05": "HXLS",
-            "10:00": "HXLS",
-            "11:20": "HXLS",
-            "12:15": "HXLS",
-            "13:10": "HXLS"
+            "9:05AM": "HXLS",
+            "10:00AM": "HXLS",
+            "11:20AM": "HXLS",
+            "12:15AM": "HXLS",
+            "1:10PM": "HXLS"
         },
         "Friday": {
-            "9:05": "HXLS",
-            "10:00": "HXLS",
-            "11:20": "HXLS",
-            "12:15": "HXLS",
-            "13:10": "HXLS"
+            "9:05AM": "HXLS",
+            "10:00AM": "HXLS",
+            "11:20AM": "HXLS",
+            "12:15AM": "HXLS",
+            "1:10PM": "HXLS"
         },
         "Saturday": {
             
