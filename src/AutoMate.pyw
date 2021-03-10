@@ -42,6 +42,6 @@ while len(day_schedule) > 0:
     target_hr, target_mins, _ = parseTime(target_time)
 
     # Check if this is the last refresh in the join span
-    last_refresh = True if mins + config.REFRESH_TIME < target_mins - config.MIN_JOIN_TIME else False
+    last_refresh = True if mins + config.REFRESH_TIME/60 < target_mins - config.MIN_JOIN_TIME/60 else False
     if hr == target_hr and last_refresh:
         workers.execute_job(area)
