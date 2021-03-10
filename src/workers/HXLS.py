@@ -48,12 +48,13 @@ def get_class():
             for event in calendar['items']:
                 if 'zoom' in event['description']:
                     descriptions.append(event['description'])
-            
+
             if len(descriptions) != 0:
                 return descriptions.pop()
+    return 'Failed sieve'
 
 def join_class():
-    description = get_class()
+    description: str = get_class()
     util.zoom.join_from_link(description)
 
 primary_action = join_class
