@@ -1,7 +1,7 @@
 {
     "CALENDAR_NAME": "GGN LMS Calendar",
     "REFRESH_TIME": 50,
-    "MIN_JOIN_TIME": 1,
+    "MIN_PREJOIN_OFFSET": 60,
 
     "README": [
         " REFRESH_TIME: x => check if it's time to join every x seconds                                             ",
@@ -10,9 +10,9 @@
         "      'Classes will never be joined before REFRESH_TIME from the class'                                    ",
         "       e.g. REFRESH_TIME = 50 means classes will be joined anywhere** in the 50 seconds before the class   ",
         "                                                                                                           ",
-        " **MIN_JOIN_TIME can change this so that classes are joined atleast some time before the class to allow    ",
+        " **MIN_PREJOIN_OFFSET can change this so that classes are joined atleast some time before the class to allow    ",
         "   manual joining in case of a problem.                                                                    ",
         "                                                                                                           ",
-        " MIN_JOIN_TIME = y # join atleast before y seconds before the class begins                                 "
+        " MIN_PREJOIN_OFFSET = y # join atleast before y seconds before the class begins                                 "
     ]
 }
