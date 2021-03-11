@@ -2,8 +2,14 @@ import os
 import re
 
 def get_info_from_link(linkContainingString: str):
-    meeting_id = re.search(r'\d+', linkContainingString).group()
-    pwd = re.search(r'pwd=(\w+)', linkContainingString).group(1)
+    '''
+    ...
+    https://xperientiallearning-org.zoom.us/j/94130621346?pwd=RHNmWXdmR3FUWGxIcnpvVWw0ZkRiZz09
+    ...
+    '''
+    solvedLink = re.search(r'(\d+)\?pwd=(\w+)', linkContainingString)
+    meeting_id = solvedLink.group(1)
+    pwd = solvedLink.group(2)
     return meeting_id, pwd
 
 def join_from_info(meeting_id: str, hashed_pwd: str):
