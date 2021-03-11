@@ -64,4 +64,4 @@ def join_link():
     util.zoom.join_from_link(description)
 
 if __name__ == '__main__':
-    print(get_link())
+    join_link()
