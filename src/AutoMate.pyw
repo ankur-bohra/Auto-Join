@@ -8,14 +8,17 @@ import sources
 def parseTime(raw: str):
     # (H?)H:MM(AM/PM)
     solved = re.search(r'(\d+):(\d+)(\w+)', raw)
-    hrs = solved.group(1)
-    mins = solved.group(2)
+    hrs = int(solved.group(1))
+    mins = int(solved.group(2))
     period = solved.group(3)
-    return int(hrs), int(mins), period
+
+    if period == 'PM':
+        hrs += 12
+    return hrs, mins
 
 def solveTime(raw: str):
-    hrs, mins, period = parseTime(raw)
-    solved = (12 if period == 'PM' else 0) + hrs + (mins/60)
+    hrs, mins = parseTime(raw)
+    solved = hrs + (mins/60)
     return solved
 
 def getTime():
@@ -40,15 +43,15 @@ while len(day_schedule) > 0 and len(sortedTimings) > 0:
     target_time = sortedTimings[-1]
     source = day_schedule[target_time]
     hr, mins = getTime()
-    target_hr, target_mins, _ = parseTime(target_time)
+    target_hr, target_mins = parseTime(target_time)
 
     if hr > target_hr or (hr == target_hr and mins > target_mins):
         sortedTimings.remove(target_time)
         day_schedule.pop(target_time)
         print('Cleared past:', target_time, source)
         continue
-    print(sortedTimings)
+
     # Check if this is the last refresh in the join span
-    last_refresh = True if mins + config.REFRESH_TIME/60 < target_mins - config.MIN_JOIN_TIME/60 else False
+    last_refresh = True if mins + config['REFRESH_TIME']/60 < target_mins - config['MIN_JOIN_TIME']/60 else False
     if hr == target_hr and last_refresh:
         sources.get_source(source).join_link()
