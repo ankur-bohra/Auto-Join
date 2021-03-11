@@ -2,7 +2,10 @@ import json
 import os.path
 import pickle
 
-import util # type: ignore
+if __name__ == '__main__':
+    import util # type: ignore
+else:
+    from . import util
 from google.auth.transport.requests import Request
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
