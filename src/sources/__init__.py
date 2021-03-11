@@ -1,9 +1,9 @@
-from . import calendar, whatsapp
+from . import google_calendar#, whatsapp
 
 source_codes = {
-    "CLNDR": calendar,
-    "WHTSP": whatsapp
+    "CLNDR": google_calendar,
+    # "WHTSP": whatsapp
 }
 
-def get(source):
+def get_source(source):
     return source_codes[source]
