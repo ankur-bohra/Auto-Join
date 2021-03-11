@@ -44,4 +44,4 @@ while len(day_schedule) > 0:
     # Check if this is the last refresh in the join span
     last_refresh = True if mins + config.REFRESH_TIME/60 < target_mins - config.MIN_JOIN_TIME/60 else False
     if hr == target_hr and last_refresh:
-        sources.get(source).join_link()
+        sources.get_source(source).join_link()
