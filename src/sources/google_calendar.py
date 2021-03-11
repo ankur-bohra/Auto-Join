@@ -41,13 +41,13 @@ def get_link():
     # Interact with API
     calendar_list = service.calendarList().list().execute() # type: ignore
     for calendar in calendar_list['items']:
-        if calendar['summary'] != target_calendar:
+        if calendar['summary'] == target_calendar:
             # Get events in valid time period
             calendar_id = calendar['id']
             calendar = service.events().list( # type: ignore
                 calendarId=calendar_id,
                 timeMin = util.time.now(),
-                timeMax = util.time.offset(minutes=1)).execute()
+                timeMax = util.time.offset(minutes=30)).execute() # 30 chosen to limit output but ease testing
             
             # Cumulate zoom links
             descriptions = []
@@ -57,7 +57,7 @@ def get_link():
 
             if len(descriptions) != 0:
                 return descriptions.pop()
-    return 'Failed sieve'
+    return 'Sieve empty, no classes found: '
 
 def join_link():
     description: str = get_link()
