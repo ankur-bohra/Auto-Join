@@ -60,11 +60,12 @@ def get_link():
 
             if len(descriptions) != 0:
                 return descriptions.pop()
-    return 'Sieve empty, no classes found: '
+    return 'None'
 
 def join_link():
     description: str = get_link()
-    util.zoom.join_from_link(description)
+    if description != 'None':
+        util.zoom.join_from_link(description)
 
 if __name__ == '__main__':
     join_link()
