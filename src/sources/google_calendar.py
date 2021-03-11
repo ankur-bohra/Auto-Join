@@ -1,9 +1,12 @@
+'''
 import json
 import os.path
 import pickle
 
-from . import util # type: ignore
+import util # type: ignore
+'''
 from google.auth.transport.requests import Request
+'''
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 
@@ -65,3 +68,4 @@ def join_link():
 
 if __name__ == '__main__':
     print(get_link())
+'''
