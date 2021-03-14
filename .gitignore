@@ -1,6 +1,7 @@
 # Ignore test logs and caches
 *.log
 __pycache__/
+jupyter/
 
 # Ignore editor config
 .vscode/
