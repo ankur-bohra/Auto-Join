@@ -1,57 +1,33 @@
 import re
-import time
-from datetime import datetime
+from datetime import datetime, timedelta
 
-def parse_formatted_time(raw: str):
-    # (H?)H:MM(AM/PM)
-    solved = re.search(r'(\d+):(\d+)(\w+)', raw)
-    hrs = int(solved.group(1))
-    mins = int(solved.group(2))
-    period = solved.group(3)
+def parse_formatted_time(time_string):
+    today = datetime.today().date()
+    date_string = today.strftime('%d/%m/%y') + ' ' + time_string
+    date = datetime.strptime(date_string, '%d/%m/%y %I:%M%p')
+    return date.astimezone()
 
-    if period == 'PM':
-        hrs += 12
-    return hrs, mins
+def parse_input_time(input_time):
+    pattern = r'(\d+:\d+\w{2})(?:-(\d+:\d+\w{2}))?'
+    match = re.search(pattern, input_time)
+    
+    time_start = match.group(1)
+    dt_start = parse_formatted_time(time_start)
+    result = (dt_start, None)
 
-def solve_formatted_time(raw: str):
-    hrs, mins = parse_formatted_time(raw)
-    solved = hrs + (mins/60)
-    return solved
+    time_end = match.group(2)
+    if time_end:
+        dt_end = parse_formatted_time(time_end)
+        result = (dt_start, dt_end)
+    return result
 
 def get_current_time():
-    now = datetime.now()
-    hrs = now.strftime('%H')
-    mins = now.strftime('%M')
-    secs = now.strftime('%S')
-    return int(hrs), int(mins), int(secs)
+    dt = datetime.now()
+    return dt.astimezone()
 
-def is_last_refresh(raw_time: str, refresh_time: int, min_prejoin_offset: int):
-    hrs_now, mins_now, secs_now = get_current_time()
-    hrs_event, mins_event = parse_formatted_time(raw_time)
+def is_last_refresh(dt_event, config):
+    dt_now = get_current_time()
+    dt_refresh = dt_now + timedelta(seconds=config.get('REFRESH_TIME'))
+    dt_prejoin = dt_event - timedelta(seconds=config.get('PREJOIN_OFFSET'))
 
-    # Adjust mins_now to fractional minutes
-    mins_now += secs_now/60
-
-    # Calculate next refresh time
-    hrs_next = hrs_now
-    mins_next = mins_now + refresh_time/60
-    if mins_next >= 60: # Update hour        
-        mins_next -= 60
-        hrs_next += 1
-    next_refresh = hrs_next + mins_next/60
-
-    # Set prejoin time
-    hrs_prejoin = hrs_event
-    mins_prejoin = mins_event - min_prejoin_offset/60
-    if mins_prejoin < 0: # Udpate hour
-        mins_prejoin += 60
-        hrs_prejoin -= 1
-    prejoin_time = hrs_prejoin + mins_prejoin/60
-
-    # Finally compare next refresh time and prejoin time
-    if next_refresh >= prejoin_time:
-        print(f'{hrs_next}:{mins_next} comes AFTER {hrs_prejoin}:{mins_prejoin}')
-        print(f'{next_refresh} >= {prejoin_time}')
-        return True
-    else:
-        return False
+    return dt_refresh >= dt_prejoin
