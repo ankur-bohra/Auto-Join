@@ -1,18 +1,18 @@
 {
-    "CALENDAR_NAME": "GGN LMS Calendar",
-    "REFRESH_TIME": 50,
-    "MIN_PREJOIN_OFFSET": 60,
+    "Calendar Name": "GGN LMS Calendar",
+    "Refresh Time": 50,
+    "Pre-Join Offset": 60,
+    "Calendar Cache Refresh Time": 600,
 
-    "README": [
-        " REFRESH_TIME: x => check if it's time to join every x seconds                                             ",
-        " Note: REFRESH_TIME affects how early classes are joined.                                                  ",
-        "       Atleast one refresh will happen in REFRESH_TIME seconds before the class, so it is safest to say:   ",
-        "      'Classes will never be joined before REFRESH_TIME from the class'                                    ",
-        "       e.g. REFRESH_TIME = 50 means classes will be joined anywhere** in the 50 seconds before the class   ",
-        "                                                                                                           ",
-        " **MIN_PREJOIN_OFFSET can change this so that classes are joined atleast some time before the class to allow    ",
-        "   manual joining in case of a problem.                                                                    ",
-        "                                                                                                           ",
-        " MIN_PREJOIN_OFFSET = y # join atleast before y seconds before the class begins                                 "
-    ]
+    "README": {
+        "Calendar Name": ["Name of the calendar to search for zoom links. Copy from the calendars listed at the ",
+                          "bottom left of the calendar window.                                                  "],
+        "Refresh Time": ["Number of SECONDS to wait before checking if it's appropriate to join yet. Atleast one",
+                         "refresh will happen in x no. of seconds before a class begins i.e.:                   ",
+                         "Classes will never be joined before Refresh Time from the class                       "],
+        "Pre-Join Offset": ["Number of SECONDS to join before the class begins. Make sure there's enough time   ",
+                            "to join manually if need be. Ideally equal to time it takes you to join manually.  "],
+        "Calendar Cache Refresh Time": ["Number of MINUTES to wait before refreshing calendar data, this allows ",
+                                        "corrected mistakes to be reflected to the local event copy             "]
+    }
 }
