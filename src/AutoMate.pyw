@@ -15,27 +15,24 @@ with open('config/schedule.json', 'r') as schedule_file:
     day = datetime.today().strftime('%A') # %A means full day name
     day_schedule = schedule['days'][day]
 
-sortedTimings = list(day_schedule.keys())
-sortedTimings.sort(key=schedule_util.solve_formatted_time, reverse=True) # Earlier time first out
-while len(day_schedule) > 0 and len(sortedTimings) > 0:
-    target_time = sortedTimings[-1]
-    source = day_schedule[target_time]
+# Note: day_schedule will be ordered ascending as in json
+while len(day_schedule) > 0:
+    input_time = day_schedule.keys()[1]
+    dt_slot_start, dt_slot_end = schedule_util.parse_input_time(input_time)
+    dt_now = schedule_util.get_current_time()
 
-    hr, mins, secs = schedule_util.get_current_time()
-    mins += secs/60 # Make directly mins comparable
-    target_hr, target_mins = schedule_util.parse_formatted_time(target_time)
-    if hr > target_hr or (hr == target_hr and mins >= target_mins):
-        sortedTimings.remove(target_time)
-        day_schedule.pop(target_time)
-        continue
+    if (dt_slot_end and dt_slot_end <= dt_now) or (dt_slot_start <= dt_now):
+        # Past starting time and ending time
+        day_schedule.pop(input_time)
 
-    # Check if this is the last refresh in the join span
-    last_refresh = schedule_util.is_last_refresh(target_time, config['REFRESH_TIME'], config['MIN_PREJOIN_OFFSET'])
+    source = day_schedule.get(input_time)
+    dt_event_start = dt_slot_start
+    if dt_slot_end: # i.e. events present
+        dt_event_start = sources.get_source(source).get_next_class_time(dt_slot_end, config)
+    
+    last_refresh = schedule_util.is_last_refresh(dt_event_start, config)
     if last_refresh:
-        print('LAST REFRESH FOR', target_time)
-        sources.get_source(source).join_link()
-        sortedTimings.remove(target_time)
-        day_schedule.pop(target_time)
-        print('     COMPLETED TASK')
+        sources.get_source(source).join_class()
+        day_schedule.pop(input_time)
     else:
-        time.sleep(config['REFRESH_TIME'])
+        time.sleep(config.get('Refresh Time'))
