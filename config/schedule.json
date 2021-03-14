@@ -1,37 +1,19 @@
 {
-    "days": {
-        "Monday": {
-            
-        },
-        "Tuesday": {
-            
-        },
-        "Wednesday": {
-            "9:05AM": "CLNDR",
-            "10:00AM": "CLNDR",
-            "11:20AM": "CLNDR",
-            "12:15AM": "CLNDR",
-            "1:10PM": "CLNDR"
-        },
-        "Thursday": {
-            "9:05AM": "CLNDR",
-            "10:00AM": "CLNDR",
-            "11:20AM": "CLNDR",
-            "12:15AM": "CLNDR",
-            "1:10PM": "CLNDR"
-        },
-        "Friday": {
-            "9:05AM": "CLNDR",
-            "10:00AM": "CLNDR",
-            "11:20AM": "CLNDR",
-            "12:15AM": "CLNDR",
-            "1:10PM": "CLNDR"
-        },
-        "Saturday": {
-            
-        },
-        "Sunday": {
-            
-        }
+    "Monday": {   
+    },
+    "Tuesday": {
+    },
+    "Wednesday": {
+        "8:50AM-2:00PM": "CLNDR"
+    },
+    "Thursday": {
+        "8:50AM-2:00PM": "CLNDR"
+    },
+    "Friday": {
+        "8:50AM-2:00PM": "CLNDR"
+    },
+    "Saturday": {      
+    },
+    "Sunday": {       
     }
 }
