@@ -11,4 +11,5 @@ jupyter/
 env/
 
 # Ignore sensitive objects
-token.pickle
+data/client_secret.json
+data/token.json
