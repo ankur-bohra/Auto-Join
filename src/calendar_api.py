@@ -126,7 +126,7 @@ def get_events_in_time_span(calendar: Dict, time_from: datetime, time_to: dateti
         return events_in_span["items"] # Events are a level deeper
     else:
         # time_from and time_to can't be used to check partial overlaps
-        # a day's span is used and filterting is done against time_from
+        # a day's span is used and filtering is done against time_from
         # and time_to later.
         first_day_start = datetime(year=time_from.year, month=time_from.month, day=time_from.day) # Accept spans of arbitary lengths
         last_day_end = datetime(year=time_to.year, month=time_to.month, day=time_to.day+1)
