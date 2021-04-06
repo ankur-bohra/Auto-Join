@@ -26,11 +26,7 @@ def get_creds(scopes: Sequence[str], data_folder: Union[str, TextIO] = "data",
 
     Returns:
         The credentials stored or created.
-    """
-    # Convert data_folder to string if not already so
-    if type(data_folder) == TextIOWrapper:
-        data_folder = data_folder.name
-    
+    """    
     creds: Optional[Type[Credentials]] = None
     # The file token.json stores the user"s access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
