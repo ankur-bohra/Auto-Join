@@ -15,7 +15,8 @@ scopes = [
 
 # API FUNCTIONS
 
-def get_creds(scopes: Sequence[str], data_folder: Union[str, TextIO] = "data", show_auth_prompt: bool = True) -> Type[Credentials]:
+def get_creds(scopes: Sequence[str], data_folder: Union[str, TextIO] = "data",
+              show_auth_prompt: bool = True, reuse_creds: bool = True) -> Type[Credentials]:
     """Get/create user credentials in given folder with specified scopes.
 
     Args:
@@ -34,7 +35,7 @@ def get_creds(scopes: Sequence[str], data_folder: Union[str, TextIO] = "data", s
     # The file token.json stores the user"s access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
     # time.
-    if os.path.exists(data_folder+"\\token.json"):
+    if reuse_creds and os.path.exists(data_folder+"\\token.json"):
         creds = Credentials.from_authorized_user_file(data_folder+"\\token.json", scopes)
         
     # If there are no (valid) credentials available, let the user log in.
@@ -161,7 +162,6 @@ def get_events_in_time_span(calendar: Dict, time_from: datetime, time_to: dateti
                 # Starts and ends in timespan
                 event["OverlapType"] = "Inside"
         return events_in_span
-
 
 if __name__ == "__main__":
     result = get_calendar_list()
