@@ -1,8 +1,7 @@
 import os
-from typing import Sequence, TextIO, Union, Optional, List, Dict, Type, Tuple, Int
+from typing import Sequence, Optional, List, Dict, Type
 
-from _io import TextIOWrapper # type: ignore
-from datetime import datetime, timedelta
+from datetime import datetime
 from google.oauth2.credentials import Credentials
 from google.auth.transport.requests import Request
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -15,7 +14,7 @@ scopes = [
 
 # API FUNCTIONS
 
-def get_creds(scopes: Sequence[str], data_folder: Union[str, TextIO] = "data",
+def get_creds(scopes: Sequence[str], data_folder: str = "data",
               show_auth_prompt: bool = True, reuse_creds: bool = True) -> Type[Credentials]:
     """Get/create user credentials in given folder with specified scopes.
 
