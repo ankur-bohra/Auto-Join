@@ -51,7 +51,7 @@ def get_creds(scopes: Sequence[str], data_folder: str = "data",
 
 # service will be built only once per run
 service = None
-def get_service() -> Resource:
+def get_service(credentials: None) -> Resource:
     '''Construct or return a service for interacting with the Calendar v3 API
 
     Returns:
@@ -59,8 +59,9 @@ def get_service() -> Resource:
     '''
     global service 
     if service is None:
-        creds: Credentials = get_creds(scopes, data_folder="data", show_auth_prompt=False)
-        service = build("calendar", "v3", credentials=creds)
+        if credentials is None:
+            credentials: Credentials = get_creds(scopes, data_folder="data", show_auth_prompt=False)
+        service = build("calendar", "v3", credentials=credentials)
     return service
 
 # Separate function because this will be needed in the selection UI
