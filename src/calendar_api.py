@@ -113,7 +113,7 @@ def get_events_in_time_span(calendarId: str, time_from: datetime, time_to: datet
             "Across": The Event starts before and ends after the time span.
     '''
     service = get_service()
-    events = service.events(calendarId=calendarId)
+    events = service.events()
     if allow_incomplete_overlaps == False:
         # time_from and time_to can be directly set to timeMin and
         # timeMax but they have to be converted to string RFC3999.
@@ -121,6 +121,7 @@ def get_events_in_time_span(calendarId: str, time_from: datetime, time_to: datet
         time_to = time_to.astimezone().isoformat()
 
         events_in_span = events.list(
+            calendarId=calendarId,
             timeMin=time_from, timeMax=time_to,
             singleEvents=True, orderBy="startTime" # startTime order requires singleEvents to be True
         ).execute()
@@ -133,6 +134,7 @@ def get_events_in_time_span(calendarId: str, time_from: datetime, time_to: datet
         last_day_end = datetime(year=time_to.year, month=time_to.month, day=time_to.day+1)
 
         events_today = events.list(
+            calendarId=calendarId,
             timeMin=first_day_start, timeMax=last_day_end,
             singleEvents=True, orderBy="startTime"
         ).execute()
