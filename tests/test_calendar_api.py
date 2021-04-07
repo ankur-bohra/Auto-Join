@@ -34,7 +34,7 @@ def delete_events():
         service = calendar_api.get_service()
         for _id in ids.values():
             print("Deleting", _id)
-            service.events().delete(calendarId="primary", eventId=_id)
+            service.events().delete(calendarId="primary", eventId=_id).execute()
     return _delete_events
 
 class TestGetCreds:
