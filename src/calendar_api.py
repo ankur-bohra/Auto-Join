@@ -9,7 +9,8 @@ from googleapiclient.discovery import build, Resource
 
 scopes = [
     "https://www.googleapis.com/auth/calendar.readonly",
-    "https://www.googleapis.com/auth/calendar.events.readonly"
+    "https://www.googleapis.com/auth/calendar.events.readonly",
+    "https://www.googleapis.com/auth/calendar.events"
 ]
 
 # API FUNCTIONS
@@ -22,6 +23,7 @@ def get_creds(scopes: Sequence[str], data_folder: str = "data",
         scopes: The scopes listed in the OAuth consent screen.
         data_folder: The folder containing client_secret.json and to store credentials in.
         show_auth_prompt: Whether or not to show the user the authourization link in the console.
+        reuse_creds: Whether or not to use credentials from previous runs.
 
     Returns:
         The credentials stored or created.
@@ -51,15 +53,18 @@ def get_creds(scopes: Sequence[str], data_folder: str = "data",
 
 # service will be built only once per run
 service = None
-def get_service() -> Resource:
+def get_service(reuse_creds: bool = True) -> Resource:
     '''Construct or return a service for interacting with the Calendar v3 API
+
+    Args:
+        reuse_creds: Whether or not to use credentials from previous runs.
 
     Returns:
         A Resource object that can interact with the Calendar v3 API
     '''
     global service 
     if service is None:
-        credentials: Credentials = get_creds(scopes, data_folder="data", show_auth_prompt=False)
+        credentials: Credentials = get_creds(scopes, data_folder="data", show_auth_prompt=False, reuse_creds=reuse_creds)
         service = build("calendar", "v3", credentials=credentials)
     return service
 
