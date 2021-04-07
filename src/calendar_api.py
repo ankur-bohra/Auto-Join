@@ -92,7 +92,7 @@ def get_calendar_from_list_entry(calendar_list_entry: dict) -> str:
     # calendarListEntry has partial, useless data and isn't
     # very useful in the API, directly getting calendar is 
     # more sensible
-    calendar_id = calendar_list_entry["items"] 
+    calendar_id = calendar_list_entry["id"] 
     calendar = service.calendars().get(calendarId=calendar_id).execute() 
     return calendar
 
