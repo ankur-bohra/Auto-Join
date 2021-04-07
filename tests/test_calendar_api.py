@@ -39,11 +39,11 @@ def delete_events():
 
 class TestGetCreds:
     def test_without_folder(self, scopes):
-        credentials = calendar_api.get_creds(scopes, reuse_creds=False)
+        credentials = calendar_api.get_creds(scopes)
         assert credentials.valid
 
     def test_with_folder(self, scopes):
-        credentials = calendar_api.get_creds(scopes, "data", reuse_creds=False)
+        credentials = calendar_api.get_creds(scopes, "data")
         assert credentials.valid
 
     def test_from_auth_file(self, scopes):
