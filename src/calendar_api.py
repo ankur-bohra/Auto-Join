@@ -92,11 +92,11 @@ def get_calendar_from_list_entry(calendar_list_entry: dict) -> str:
     calendar = service.calendars().get(calendarId=calendar_id).execute() 
     return calendar
 
-def get_events_in_time_span(calendar: Dict, time_from: datetime, time_to: datetime, allow_incomplete_overlaps: bool = False) -> List[Dict]:
+def get_events_in_time_span(calendarId: str, time_from: datetime, time_to: datetime, allow_incomplete_overlaps: bool = False) -> List[Dict]:
     '''Get events partially and/or completely inside a time span from the given calendar.
 
     Args:
-        calendar: A Calendar dictionary.
+        calendarId: calendarId of the calendar to search.
         time_from: The start of the time span (inclusve).
         time_to: The end of the time span (exclusive).
         allow_incomplete_overlaps: Whether to include events not completely inside the time span. Defaults to false. 
@@ -109,7 +109,7 @@ def get_events_in_time_span(calendar: Dict, time_from: datetime, time_to: dateti
             "Across": The Event starts before and ends after the time span.
     '''
     service = get_service()
-    events = service.events(calendarId=calendar["id"])
+    events = service.events(calendarId=calendarId)
     if allow_incomplete_overlaps == False:
         # time_from and time_to can be directly set to timeMin and
         # timeMax but they have to be converted to string RFC3999.
