@@ -114,56 +114,48 @@ def get_events_in_time_span(calendarId: str, time_from: datetime, time_to: datet
     '''
     service = get_service()
     events = service.events()
-    if allow_incomplete_overlaps == False:
-        # time_from and time_to can be directly set to timeMin and
-        # timeMax but they have to be converted to string RFC3999.
-        time_from = time_from.astimezone().isoformat() # RFC3999 requires the timezone
-        time_to = time_to.astimezone().isoformat()
 
-        events_in_span = events.list(
-            calendarId=calendarId,
-            timeMin=time_from, timeMax=time_to,
-            singleEvents=True, orderBy="startTime" # startTime order requires singleEvents to be True
-        ).execute()
-        return events_in_span["items"] # Events are a level deeper
-    else:
-        # time_from and time_to can't be used to check partial overlaps
-        # a day's span is used and filtering is done against time_from
-        # and time_to later.
-        first_day_start = datetime(year=time_from.year, month=time_from.month, day=time_from.day) # Accept spans of arbitary lengths
-        last_day_end = datetime(year=time_to.year, month=time_to.month, day=time_to.day+1)
+    # Make dts timezone aware
+    time_from = time_from.astimezone()
+    time_to = time_to.astimezone()
 
-        events_today = events.list(
-            calendarId=calendarId,
-            timeMin=first_day_start, timeMax=last_day_end,
-            singleEvents=True, orderBy="startTime"
-        ).execute()
-        events_today = events_today["items"]
-        events_in_span = []
-        for event in events_today:
-            event_start = event["start"]["datetime"]
-            event_end = event["start"]["datetime"]
+    events_overlapping_in_span = events.list(
+        calendarId=calendarId,
+        timeMin=time_from.isoformat(), timeMax=time_to.isoformat(),
+        singleEvents=True, orderBy="startTime" # startTime order requires singleEvents to be True
+    ).execute()["items"]
+    events_chosen = [] # "Sink" for events passing filter
+    for event in events_overlapping_in_span:
+        event_start = event["start"]["dateTime"]
+        event_end = event["end"]["dateTime"]
 
-            # Operators can be used with datetime objects
-            event_start = datetime.fromisoformat(event_start)
-            event_end = datetime.fromisoformat(event_end)
+        # Operators can be used with datetime objects
+        event_start = datetime.fromisoformat(event_start)
+        event_end = datetime.fromisoformat(event_end)
 
-            event_starts_before = event_start < time_from
-            event_ends_after = event_end > time_to
+        event_starts_before = event_start < time_from
+        event_ends_after = event_end > time_to
 
+        if not event_starts_before and not event_ends_after:
+            event["overlapType"] = "Inside"
+        elif allow_incomplete_overlaps:
+            # Allow further divisions
             if event_starts_before and not event_ends_after:
                 # Cross only start time
                 event["overlapType"] = "OverStart"
             elif not event_starts_before and event_ends_after:
                 # Cross only end time
-                event["OverlapType"] = "OverEnd"
+                event["overlapType"] = "OverEnd"
             elif event_starts_before and event_ends_after:
                 # Cross both start and end times
-                event["OverlapType"] = "Across"
-            elif not event_starts_before and not event_ends_after:
-                # Starts and ends in timespan
-                event["OverlapType"] = "Inside"
-        return events_in_span
+                event["overlapType"] = "Across"
+        # else:
+            # No overlapType assigned as only Inside is allowed and event wasn't inside
+        
+        if "overlapType" in event: # Event passed appropriate filter
+            events_chosen.append(event)
+
+    return events_chosen
 
 if __name__ == "__main__":
     result = get_calendar_list()
