@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 
-from . import calendar_api, zoom, ui
+import calendar_api, zoom, ui # type: ignore
 
 config = {}
 
