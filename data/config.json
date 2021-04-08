@@ -1,0 +1,14 @@
+{
+    "application": {
+
+    },
+    "calendar": {
+        "name": "GGN LMS Calendar",
+        "cache_refresh": 300,
+        "join_refresh": 20,
+        "join_by": {
+            "minimum": 30,
+            "maximum": 50
+        }
+    }
+}
