@@ -158,7 +158,5 @@ def get_events_in_time_span(calendarId: str, time_from: datetime, time_to: datet
     return events_chosen
 
 if __name__ == "__main__":
-    result = get_calendar_list()
-    teamie_calendar_list_entry = result[2]
-    teamie_calendar = get_calendar_from_list_entry(teamie_calendar_list_entry)
+    teamie_calendar = get_calendar_from_name("GGN LMS Calendar")
     print(teamie_calendar)
