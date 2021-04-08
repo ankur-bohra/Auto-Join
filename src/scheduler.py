@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 
-from . import calendar_api, zoom
+from . import calendar_api, zoom, ui
 
 config = {}
 
@@ -30,10 +30,9 @@ def get_current_event():
         if event["id"] != last_event and (event_start <= now <= event_end or event_start <= next_refresh):
             possibilities.append(event)
 
-    if len(possibilities) > 1:
-        # Report conflict
-        print()
-    elif len(possibilities == 1):
+    if len(possibilities) > 0:
+        if len(possibilities) > 1:
+            ui.flag_conflicts(possibilities)
         # Join event
         event = possibilities.pop()
         zoom.join_from_link_source(event["description"])
