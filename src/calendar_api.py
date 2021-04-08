@@ -79,22 +79,22 @@ def get_calendar_list() -> Resource:
     calendar_list = service.calendarList().list().execute() # Default maxResults = 100 which is sufficient
     return calendar_list["items"]
 
-def get_calendar_from_list_entry(calendar_list_entry: dict) -> str:
-    '''Get the calendar from a calendarListEntry.
+def get_calendar_from_name(calendar_name: str) -> Optional[Dict]:
+    '''Get the calendar associated with a given calendar name.
 
     Args:
-        calendar_list_entry: A calendarListEntry dictionary from calendarList.items
+        calendar_name: The name of the calendar.
 
     Returns:
-        The calendar object associated with the given calendarListEntry's id.
+        The calendar associated with the calendar name.
     '''
     service = get_service()
-    # calendarListEntry has partial, useless data and isn't
-    # very useful in the API, directly getting calendar is 
-    # more sensible
-    calendar_id = calendar_list_entry["id"] 
-    calendar = service.calendars().get(calendarId=calendar_id).execute() 
-    return calendar
+    calendars = get_calendar_list()
+    for calendar in calendars:
+        if calendar["summary"] == calendar_name:
+            calendar_id = calendar["id"]
+            calendar = service.calendars().get(calendarId=calendar_id).execute()
+            return calendar
 
 def get_events_in_time_span(calendarId: str, time_from: datetime, time_to: datetime, allow_incomplete_overlaps: bool = False) -> List[Dict]:
     '''Get events partially and/or completely inside a time span from the given calendar.
