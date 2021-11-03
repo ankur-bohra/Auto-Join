@@ -144,6 +144,7 @@ class SysTrayIcon(object):
         self.refresh_icon()
 
     def destroy(self, hwnd, msg, wparam, lparam):
+        print(hwnd, msg, wparam, lparam)
         if self.on_quit: self.on_quit(self)
         nid = (self.hwnd, 0)
         win32gui.Shell_NotifyIcon(win32gui.NIM_DELETE, nid)
